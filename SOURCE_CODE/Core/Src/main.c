@@ -49,6 +49,7 @@
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 void clearAllClock();
+void setNumberOnClock(int num);
 
 /* USER CODE BEGIN PFP */
 
@@ -127,8 +128,7 @@ int main(void)
 		  counter = 0;
 		  clearAllClock();
 	  }
-	  HAL_GPIO_TogglePin(clock_ports[counter], clock_pins[counter]);
-	  counter++;
+	  setNumberOnClock(counter++);
 	  HAL_Delay(1000);
   }
     /* USER CODE END WHILE */
@@ -205,6 +205,10 @@ void clearAllClock() {
 	for (int i = 0; i < 12; i++) {
 		  HAL_GPIO_WritePin(clock_ports[i], clock_pins[i], SET);
 	  }
+}
+
+void setNumberOnClock(int num) {
+	HAL_GPIO_WritePin(clock_ports[num], clock_pins[num], RESET);
 }
 
 /* USER CODE BEGIN 4 */
