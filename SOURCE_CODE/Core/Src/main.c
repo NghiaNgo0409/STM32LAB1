@@ -105,12 +105,56 @@ int main(void)
   HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
   HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, SET);
   HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, SET);
-  int counter = 0;
+  int red_timer = 5, green_timer = 3;
+  int led_counter = 5;
+  int state = 0;
   while (1)
   {
-	  if (counter >= 10) counter = 0;
-	  display7SEG(counter++);
+	  display7SEG(led_counter);
+	  switch (state) {
+	  	  case 0:
+	  		HAL_GPIO_WritePin(LED_GREEN_VERTICAL_GPIO_Port, LED_GREEN_VERTICAL_Pin, RESET);
+	  		HAL_GPIO_WritePin(LED_RED_HORIZONTAL_GPIO_Port, LED_RED_HORIZONTAL_Pin, RESET);
+	  		HAL_GPIO_WritePin(LED_YELLOW_HORIZONTAL_GPIO_Port, LED_YELLOW_HORIZONTAL_Pin , SET);
+	  		HAL_GPIO_WritePin(LED_RED_VERTICAL_GPIO_Port, LED_RED_VERTICAL_Pin, SET);
+	  		led_counter--;
+	  		if (led_counter < green_timer) {
+	  			state = 1;
+	  		}
+	  		break;
+	  	  case 1:
+	  		HAL_GPIO_WritePin(LED_YELLOW_VERTICAL_GPIO_Port, LED_YELLOW_VERTICAL_Pin, RESET);
+	  		HAL_GPIO_WritePin(LED_GREEN_VERTICAL_GPIO_Port, LED_GREEN_VERTICAL_Pin, SET);
+	  		led_counter--;
+	  		if (led_counter <= 0) {
+	  			state = 2;
+	  			led_counter = red_timer;
+	  		}
+	  		break;
+	  	  case 2:
+	  		HAL_GPIO_WritePin(LED_YELLOW_VERTICAL_GPIO_Port, LED_YELLOW_VERTICAL_Pin, SET);
+	  		HAL_GPIO_WritePin(LED_RED_VERTICAL_GPIO_Port, LED_RED_VERTICAL_Pin, RESET);
+	  		HAL_GPIO_WritePin(LED_GREEN_HORIZONTAL_GPIO_Port, LED_GREEN_HORIZONTAL_Pin, RESET);
+	  		HAL_GPIO_WritePin(LED_RED_HORIZONTAL_GPIO_Port, LED_RED_HORIZONTAL_Pin, SET);
+	  		led_counter--;
+	  		if (led_counter < green_timer) {
+	  			state = 3;
+	  		}
+	  		break;
+	  	  case 3:
+	  		HAL_GPIO_WritePin(LED_YELLOW_HORIZONTAL_GPIO_Port, LED_YELLOW_HORIZONTAL_Pin , RESET);
+	  		HAL_GPIO_WritePin(LED_GREEN_HORIZONTAL_GPIO_Port, LED_GREEN_HORIZONTAL_Pin, SET);
+	  		led_counter--;
+	  		if (led_counter <= 0) {
+	  			state = 0;
+	  			led_counter = red_timer;
+	  		}
+	  		break;
+	  }
 	  HAL_Delay(1000);
+//	  if (counter >= 10) counter = 0;
+//	  display7SEG(counter++);
+//	  HAL_Delay(1000);
 //	  HAL_GPIO_TogglePin(LED_RED_HORIZONTAL_GPIO_Port, LED_RED_HORIZONTAL_Pin);
 //	  HAL_GPIO_TogglePin(LED_GREEN_VERTICAL_GPIO_Port, LED_GREEN_VERTICAL_Pin);
 //	  HAL_Delay(3000);
