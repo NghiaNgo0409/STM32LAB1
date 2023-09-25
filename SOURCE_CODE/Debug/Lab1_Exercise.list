@@ -203,7 +203,7 @@ int main(void)
  8000210:	08000283 	.word	0x08000283
  8000214:	080002c3 	.word	0x080002c3
 	  switch (state) {
-	  	  case 0:
+	  	  case 0: //GREEN Vertical: ON, RED Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_GREEN_VERTICAL_GPIO_Port, LED_GREEN_VERTICAL_Pin, RESET);
  8000218:	2200      	movs	r2, #0
  800021a:	2180      	movs	r1, #128	; 0x80
@@ -239,7 +239,7 @@ int main(void)
 	  		}
 	  		break;
  8000256:	e04b      	b.n	80002f0 <main+0x1a4>
-	  	  case 1:
+	  	  case 1: //YELLOW Vertical: ON, RED Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_YELLOW_VERTICAL_GPIO_Port, LED_YELLOW_VERTICAL_Pin, RESET);
  8000258:	2200      	movs	r2, #0
  800025a:	2140      	movs	r1, #64	; 0x40
@@ -254,10 +254,10 @@ int main(void)
  800026c:	68fb      	ldr	r3, [r7, #12]
  800026e:	3b01      	subs	r3, #1
  8000270:	60fb      	str	r3, [r7, #12]
-	  		if (led_counter <= 0) {
+	  		if (led_counter < -0.01) {
  8000272:	68fb      	ldr	r3, [r7, #12]
  8000274:	2b00      	cmp	r3, #0
- 8000276:	dc3d      	bgt.n	80002f4 <main+0x1a8>
+ 8000276:	da3d      	bge.n	80002f4 <main+0x1a8>
 	  			state = 2;
  8000278:	2302      	movs	r3, #2
  800027a:	60bb      	str	r3, [r7, #8]
@@ -267,7 +267,7 @@ int main(void)
 	  		}
 	  		break;
  8000280:	e038      	b.n	80002f4 <main+0x1a8>
-	  	  case 2:
+	  	  case 2://RED Vertical: ON, GREEN Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_YELLOW_VERTICAL_GPIO_Port, LED_YELLOW_VERTICAL_Pin, SET);
  8000282:	2201      	movs	r2, #1
  8000284:	2140      	movs	r1, #64	; 0x40
@@ -303,7 +303,7 @@ int main(void)
 	  		}
 	  		break;
  80002c0:	e01a      	b.n	80002f8 <main+0x1ac>
-	  	  case 3:
+	  	  case 3://RED Vertical: ON, YELLOW Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_YELLOW_HORIZONTAL_GPIO_Port, LED_YELLOW_HORIZONTAL_Pin , RESET);
  80002c2:	2200      	movs	r2, #0
  80002c4:	f44f 7100 	mov.w	r1, #512	; 0x200
@@ -318,10 +318,10 @@ int main(void)
  80002da:	68fb      	ldr	r3, [r7, #12]
  80002dc:	3b01      	subs	r3, #1
  80002de:	60fb      	str	r3, [r7, #12]
-	  		if (led_counter <= 0) {
+	  		if (led_counter < -0.01) {
  80002e0:	68fb      	ldr	r3, [r7, #12]
  80002e2:	2b00      	cmp	r3, #0
- 80002e4:	dc0a      	bgt.n	80002fc <main+0x1b0>
+ 80002e4:	da0a      	bge.n	80002fc <main+0x1b0>
 	  			state = 0;
  80002e6:	2300      	movs	r3, #0
  80002e8:	60bb      	str	r3, [r7, #8]

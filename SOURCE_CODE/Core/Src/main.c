@@ -112,7 +112,7 @@ int main(void)
   {
 	  display7SEG(led_counter);
 	  switch (state) {
-	  	  case 0:
+	  	  case 0: //GREEN Vertical: ON, RED Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_GREEN_VERTICAL_GPIO_Port, LED_GREEN_VERTICAL_Pin, RESET);
 	  		HAL_GPIO_WritePin(LED_RED_HORIZONTAL_GPIO_Port, LED_RED_HORIZONTAL_Pin, RESET);
 	  		HAL_GPIO_WritePin(LED_YELLOW_HORIZONTAL_GPIO_Port, LED_YELLOW_HORIZONTAL_Pin , SET);
@@ -122,16 +122,16 @@ int main(void)
 	  			state = 1;
 	  		}
 	  		break;
-	  	  case 1:
+	  	  case 1: //YELLOW Vertical: ON, RED Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_YELLOW_VERTICAL_GPIO_Port, LED_YELLOW_VERTICAL_Pin, RESET);
 	  		HAL_GPIO_WritePin(LED_GREEN_VERTICAL_GPIO_Port, LED_GREEN_VERTICAL_Pin, SET);
 	  		led_counter--;
-	  		if (led_counter <= 0) {
+	  		if (led_counter < -0.01) {
 	  			state = 2;
 	  			led_counter = red_timer;
 	  		}
 	  		break;
-	  	  case 2:
+	  	  case 2://RED Vertical: ON, GREEN Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_YELLOW_VERTICAL_GPIO_Port, LED_YELLOW_VERTICAL_Pin, SET);
 	  		HAL_GPIO_WritePin(LED_RED_VERTICAL_GPIO_Port, LED_RED_VERTICAL_Pin, RESET);
 	  		HAL_GPIO_WritePin(LED_GREEN_HORIZONTAL_GPIO_Port, LED_GREEN_HORIZONTAL_Pin, RESET);
@@ -141,11 +141,11 @@ int main(void)
 	  			state = 3;
 	  		}
 	  		break;
-	  	  case 3:
+	  	  case 3://RED Vertical: ON, YELLOW Horizontal: ON
 	  		HAL_GPIO_WritePin(LED_YELLOW_HORIZONTAL_GPIO_Port, LED_YELLOW_HORIZONTAL_Pin , RESET);
 	  		HAL_GPIO_WritePin(LED_GREEN_HORIZONTAL_GPIO_Port, LED_GREEN_HORIZONTAL_Pin, SET);
 	  		led_counter--;
-	  		if (led_counter <= 0) {
+	  		if (led_counter < -0.01) {
 	  			state = 0;
 	  			led_counter = red_timer;
 	  		}
