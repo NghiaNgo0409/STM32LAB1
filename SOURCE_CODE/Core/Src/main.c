@@ -130,9 +130,9 @@ int main(void)
 	  HAL_GPIO_TogglePin(clock_ports[counter], clock_pins[counter]);
 	  counter++;
 	  HAL_Delay(1000);
+  }
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-  }
   /* USER CODE END 3 */
 }
 
