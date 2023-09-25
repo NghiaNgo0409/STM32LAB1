@@ -48,11 +48,39 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+void clearAllClock();
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
+GPIO_TypeDef* clock_ports[12] = {
+		  CLOCK_0_GPIO_Port,
+		  CLOCK_1_GPIO_Port,
+		  CLOCK_2_GPIO_Port,
+		  CLOCK_3_GPIO_Port,
+		  CLOCK_4_GPIO_Port,
+		  CLOCK_5_GPIO_Port,
+		  CLOCK_6_GPIO_Port,
+		  CLOCK_7_GPIO_Port,
+		  CLOCK_8_GPIO_Port,
+		  CLOCK_9_GPIO_Port,
+		  CLOCK_10_GPIO_Port,
+		  CLOCK_11_GPIO_Port};
+  uint16_t clock_pins[12] = {
+		  CLOCK_0_Pin,
+		  CLOCK_1_Pin,
+		  CLOCK_2_Pin,
+		  CLOCK_3_Pin,
+		  CLOCK_4_Pin,
+		  CLOCK_5_Pin,
+		  CLOCK_6_Pin,
+		  CLOCK_7_Pin,
+		  CLOCK_8_Pin,
+		  CLOCK_9_Pin,
+		  CLOCK_10_Pin,
+		  CLOCK_11_Pin};
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
@@ -91,43 +119,17 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  GPIO_TypeDef* clock_ports[12] = {
-		  CLOCK_0_GPIO_Port,
-		  CLOCK_1_GPIO_Port,
-		  CLOCK_2_GPIO_Port,
-		  CLOCK_3_GPIO_Port,
-		  CLOCK_4_GPIO_Port,
-		  CLOCK_5_GPIO_Port,
-		  CLOCK_6_GPIO_Port,
-		  CLOCK_7_GPIO_Port,
-		  CLOCK_8_GPIO_Port,
-		  CLOCK_9_GPIO_Port,
-		  CLOCK_10_GPIO_Port,
-		  CLOCK_11_GPIO_Port};
-  uint16_t clock_pins[12] = {
-		  CLOCK_0_Pin,
-		  CLOCK_1_Pin,
-		  CLOCK_2_Pin,
-		  CLOCK_3_Pin,
-		  CLOCK_4_Pin,
-		  CLOCK_5_Pin,
-		  CLOCK_6_Pin,
-		  CLOCK_7_Pin,
-		  CLOCK_8_Pin,
-		  CLOCK_9_Pin,
-		  CLOCK_10_Pin,
-		  CLOCK_11_Pin};
   int counter = 0;
-  for (int i = 0; i < 12; i++) {
-	  HAL_GPIO_WritePin(clock_ports[i], clock_pins[i], SET);
-  }
+  clearAllClock();
   while (1)
   {
-	  while (counter <= 11) {
-		  HAL_GPIO_TogglePin(clock_ports[counter], clock_pins[counter]);
-		  counter++;
-		  HAL_Delay(1000);
+	  if (counter == 12) {
+		  counter = 0;
+		  clearAllClock();
 	  }
+	  HAL_GPIO_TogglePin(clock_ports[counter], clock_pins[counter]);
+	  counter++;
+	  HAL_Delay(1000);
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   }
@@ -197,6 +199,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+}
+
+void clearAllClock() {
+	for (int i = 0; i < 12; i++) {
+		  HAL_GPIO_WritePin(clock_ports[i], clock_pins[i], SET);
+	  }
 }
 
 /* USER CODE BEGIN 4 */
